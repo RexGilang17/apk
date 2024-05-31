@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "753429871477",
+    "project_id": "qrcode-getex",
+    "storage_bucket": "qrcode-getex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:753429871477:android:6e273de5015378e78eb13c",
+        "android_client_info": {
+          "package_name": "com.kuldiiproject.qr_code"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlgF_CbfA2da3CioJ-UR8dSGgSdfuAshw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
