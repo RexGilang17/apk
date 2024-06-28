@@ -2,28 +2,35 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class AddProductController extends GetxController {
-  RxBool isLoading = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  RxBool isLoading = false.obs;
 
   Future<Map<String, dynamic>> addProduct(Map<String, dynamic> data) async {
+
     try {
-      var hasil = await firestore.collection("products").add(data);
-      await firestore.collection("products").doc(hasil.id).update({
-        "productId": hasil.id,
-      });
+      
+      bool resBool = false;
+      var existingCodeProduct = await firestore.collection("products").doc(data['kode_barang']).get();
+
+      if (existingCodeProduct.exists) {
+        resBool = true;
+      } else {
+        await firestore.collection("products").doc(data['kode_barang']).set(data);
+      }
 
       return {
-        "error": false,
-        "message": "Berhasil menambah barang.",
+        "error": resBool
       };
+
     } catch (e) {
-      // Error general
-      print(e);
       return {
-        "error": true,
-        "message": "Tidak dapat menambah barang.",
+        "error": true
       };
     }
+
   }
+
+  
+
 }

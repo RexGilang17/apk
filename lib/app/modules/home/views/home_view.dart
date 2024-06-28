@@ -1,106 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'package:get/get.dart';
-import '../../../controllers/auth_controller.dart';
-import '../../../routes/app_pages.dart';
+import 'package:qr_code/app/controllers/authentication_controller.dart';
+import 'package:qr_code/app/modules/home_admin/controllers/home_admin_controller.dart';
+import 'package:qr_code/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   HomeView({Key? key}) : super(key: key);
-  final AuthController authC = Get.find<AuthController>();
+
+  final AuthenticationController authCtrl = Get.find<AuthenticationController>();
+  final colorUi = const Color.fromARGB(255, 195, 255, 147);
+
+  final HomeAdminController adminCtrl = HomeAdminController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('HomeView'),
+        title: const Text('DASHBOARD', style: TextStyle(fontWeight: FontWeight.bold),),
+        backgroundColor: colorUi,
         centerTitle: true,
       ),
       body: GridView.builder(
-        itemCount: 5,
         padding: const EdgeInsets.all(20),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        itemCount: 1,
+        gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
-        ),
+        ), 
         itemBuilder: (context, index) {
-          late String title;
-          late IconData icon;
-          late VoidCallback onTap;
-
-          switch (index) {
-            case 0:
-              title = "Add Product";
-              icon = Icons.post_add_rounded;
-              onTap = () => Get.toNamed(Routes.addProduct);
-              break;
-            case 1:
-              title = "Products";
-              icon = Icons.list_alt_outlined;
-              onTap = () => Get.toNamed(Routes.products);
-              break;
-            case 2:
-              title = "QR Code";
-              icon = Icons.qr_code;
-              onTap = () async {
-                String barcode = await FlutterBarcodeScanner.scanBarcode(
-                  "#000000",
-                  "CANCEL",
-                  true,
-                  ScanMode.QR,
-                );
-
-                // Get data dari firebase search by product id
-                Map<String, dynamic> hasil =
-                    await controller.getProductById(barcode);
-                if (hasil["error"] == false) {
-                  Get.toNamed(Routes.detailProduct, arguments: hasil["data"]);
-                } else {
-                  Get.snackbar(
-                    "Error",
-                    hasil["message"],
-                    duration: const Duration(seconds: 2),
-                  );
-                }
-              };
-              break;
-            case 3:
-              title = "Catalog";
-              icon = Icons.document_scanner_outlined;
-              onTap = () {
-                controller.downloadCatalog();
-              };
-              break;
-            case 4:
-              title = "Add Product Rusak";
-              icon = Icons.post_add_rounded;
-              onTap = () => Get.toNamed(Routes.addProductR);
-              break;
-            case 5:
-              title = "Products Rusak";
-              icon = Icons.list_alt_outlined;
-              onTap = () => Get.toNamed(Routes.productsR);
-              break;
-          }
-
           return Material(
-            color: Colors.grey.shade300,
+            color:Colors.grey.shade300,
             borderRadius: BorderRadius.circular(9),
             child: InkWell(
-              onTap: onTap,
+              onTap: () {
+                adminCtrl.downloadCatalog();
+              },
               borderRadius: BorderRadius.circular(9),
-              child: Column(
+              child: const Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
                     width: 50,
                     height: 50,
-                    child: Icon(icon, size: 50),
+                    child: Icon(Icons.document_scanner_outlined, size: 50),
                   ),
-                  const SizedBox(height: 10),
-                  Text(title),
+                  SizedBox(height: 10),
+                  Text("Catalog"),
                 ],
               ),
             ),
@@ -109,14 +58,12 @@ class HomeView extends GetView<HomeController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          Map<String, dynamic> hasil = await authC.logout();
-          if (hasil["error"] == false) {
-            Get.offAllNamed(Routes.login);
-          } else {
-            Get.snackbar("Error", hasil["error"]);
-          }
+          Map<String, dynamic> res = await authCtrl.signout();
+          if (!res["error"]) Get.offAllNamed(Routes.signin);
+          else ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Other error")));
         },
-        child: const Icon(Icons.logout),
+        backgroundColor: colorUi,
+        child: Icon(Icons.logout),
       ),
     );
   }

@@ -1,35 +1,33 @@
 class ProductModel {
-  ProductModel({
-    required this.code,
-    required this.name,
-    required this.productId,
-    required this.spesifikasi,
-    required this.jenisbarang,
-    required this.qty,
-  });
-
-  final String productId;
-  final String code;
   final String name;
-  final String spesifikasi;
-  final String jenisbarang;
-  final int qty;
+  final String nip;
+  final String code;
+  final String category;
+  final String spec;
+  final String status;
+
+  ProductModel(
+      {required this.name,
+      required this.nip,
+      required this.code,
+      required this.category,
+      required this.spec,
+      required this.status});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        code: json["code"] ?? "",
-        name: json["name"] ?? "",
-        productId: json["productId"] ?? "",
-        spesifikasi: json["spesifikasi"] ?? "",
-        jenisbarang: json["jenisbarang"] ?? "",
-        qty: json["qty"] ?? 0,
-      );
+      name: json['nama_barang'] ?? "",
+      nip: json['nip'] ?? "",
+      code: json['kode_barang'] ?? "",
+      category: json['jenis_barang'] ?? "",
+      spec: json['spesifikasi'] ?? "",
+      status: json['status_barang'] ?? "");
 
   Map<String, dynamic> toJson() => {
-        "code": code,
         "name": name,
-        "productId": productId,
-        "spesifikasi": spesifikasi,
-        "jenisbarang": jenisbarang,
-        "qty": qty,
+        "nip": nip,
+        "category": category,
+        "code": code,
+        "spec": spec,
+        "status": status
       };
 }

@@ -2,43 +2,52 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 
 class DetailProductController extends GetxController {
-  RxBool isLoadingUpdate = false.obs;
-  RxBool isLoadingDelete = false.obs;
+
+  RxBool isLoading = false.obs;
+  RxBool isLoadDelete = false.obs;
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<Map<String, dynamic>> editProduct(Map<String, dynamic> data) async {
+
     try {
-      await firestore.collection("products").doc(data["id"]).update({
-        "name": data["name"],
-        "spesifikasi": data["spesifikasi"],
-        "jenisbarang": data["jenisbarang"],
-        "qty": data["qty"],
+
+      await firestore.collection("products").doc(data['kode_barang']).update({
+        "nama_barang": data['nama_barang'],
+        "jenis_barang": data['jenis_barang'],
+        "status_barang": data['status_barang'],
+        "spesifikasi": data['spesifikasi'],
+        "nip": data['nip'],
       });
+
       return {
-        "error": false,
-        "message": "Berhasil update product.",
+        "error": false
       };
+
     } catch (e) {
       return {
-        "error": true,
-        "message": "Tidak dapat update product.",
+        "error": true
       };
     }
+
   }
 
-  Future<Map<String, dynamic>> deleteProduct(String id) async {
+  Future<Map<String, dynamic>> deleteProduct(String kode_barang) async {
+
     try {
-      await firestore.collection("products").doc(id).delete();
+      
+      await firestore.collection("products").doc(kode_barang).delete();
       return {
-        "error": false,
-        "message": "Berhasil delete product.",
+        "error": false
       };
+
     } catch (e) {
       return {
-        "error": true,
-        "message": "Tidak dapat delete product.",
+        "error": true
       };
     }
+
   }
+
+
 }
