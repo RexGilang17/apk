@@ -19,6 +19,7 @@ class AddUserController extends GetxController {
       } else {
         await firestore.collection("users").doc(data['nip']).set(data);
       }
+      
       return {
         "error": resBool
       };

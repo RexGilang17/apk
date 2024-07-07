@@ -10,7 +10,8 @@ import '../controllers/home_admin_controller.dart';
 class HomeAdminView extends GetView<HomeAdminController> {
   HomeAdminView({Key? key}) : super(key: key);
 
-  final AuthenticationController authCtrl = Get.find<AuthenticationController>();
+  final AuthenticationController authCtrl =
+      Get.find<AuthenticationController>();
   final colorUi = const Color.fromARGB(255, 195, 255, 147);
 
   final HomeAdminController adminController = HomeAdminController();
@@ -19,20 +20,23 @@ class HomeAdminView extends GetView<HomeAdminController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DASHBOARD', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('DASHBOARD',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: colorUi,
         centerTitle: true,
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: 6,
-        gridDelegate:  const SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 20,
           crossAxisSpacing: 25,
-        ), 
+        ),
         itemBuilder: (context, index) {
-          late String title; late IconData icon; late VoidCallback onTap;
+          late String title;
+          late IconData icon;
+          late VoidCallback onTap;
 
           switch (index) {
             case 0:
@@ -64,18 +68,21 @@ class HomeAdminView extends GetView<HomeAdminController> {
                   "CANCEL",
                   true,
                   ScanMode.QR,
-                );
+                );  //Baca QR BARCODE
 
-                Map<String, dynamic> hasil = await adminController.getProductByCode(barcode);
+                print('hasil barcode : ${barcode}');
+
+                Map<String, dynamic> hasil =
+                    await adminController.getProductByCode(barcode);
 
                 if (!hasil['error']) {
                   Get.toNamed(Routes.detailProduct, arguments: hasil['data']);
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Produk Tidak Ditemukan")));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Produk Tidak Ditemukan")));
                 }
-
               };
-              
+
               break;
             case 5:
               title = "Data Barang";
@@ -86,7 +93,7 @@ class HomeAdminView extends GetView<HomeAdminController> {
           }
 
           return Material(
-            color:Colors.grey.shade300,
+            color: Colors.grey.shade300,
             borderRadius: BorderRadius.circular(9),
             child: InkWell(
               onTap: onTap,
@@ -110,8 +117,11 @@ class HomeAdminView extends GetView<HomeAdminController> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           Map<String, dynamic> res = await authCtrl.signout();
-          if (!res["error"]) Get.offAllNamed(Routes.signin);
-          else ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Other error")));
+          if (!res["error"])
+            Get.offAllNamed(Routes.signin);
+          else
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text("Other error")));
         },
         backgroundColor: colorUi,
         child: Icon(Icons.logout),

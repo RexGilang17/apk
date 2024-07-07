@@ -18,6 +18,7 @@ class DetailProductController extends GetxController {
         "status_barang": data['status_barang'],
         "spesifikasi": data['spesifikasi'],
         "nip": data['nip'],
+        "no_seri": data['no_seri']
       });
 
       return {

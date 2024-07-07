@@ -58,7 +58,7 @@ class ProductsView extends GetView<ProductsController> {
                     ),
                     child: InkWell(
                       onTap: () =>
-                          Get.toNamed(Routes.detailProduct, arguments: product),
+                          Get.toNamed(Routes.detailProduct, arguments: product), //tombol kirim data produk
                       borderRadius: BorderRadius.circular(9),
                       child: Container(
                         height: 140,

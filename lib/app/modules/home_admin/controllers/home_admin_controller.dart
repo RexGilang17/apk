@@ -10,15 +10,16 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 
 class HomeAdminController extends GetxController {
-  
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   RxList<ProductModel> allProducts = List<ProductModel>.empty().obs;
 
   Future<void> downloadCatalog() async {
     final pdf = pw.Document();
 
-    final ttf = pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'));
-    final boldTtf = pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Bold.ttf'));
+    final ttf =
+        pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Regular.ttf'));
+    final boldTtf =
+        pw.Font.ttf(await rootBundle.load('assets/fonts/NotoSans-Bold.ttf'));
 
     var getData = await firestore.collection("products").get();
 
@@ -46,9 +47,7 @@ class HomeAdminController extends GetxController {
                     child: pw.Text(
                       "${index + 1}",
                       textAlign: pw.TextAlign.center,
-                      style: pw.TextStyle(
-                        fontSize: 10, font: ttf
-                      ),
+                      style: pw.TextStyle(fontSize: 10, font: ttf),
                     ),
                   ),
                   // Kode Barang
@@ -115,11 +114,20 @@ class HomeAdminController extends GetxController {
                       color: PdfColor.fromHex("#000000"),
                       barcode: pw.Barcode.qrCode(),
                       data: product.code,
-                      textStyle: pw.TextStyle(
-                        font: ttf
-                      ),
+                      textStyle: pw.TextStyle(font: ttf),
                       height: 50,
                       width: 50,
+                    ),
+                  ),
+                  pw.Padding(
+                    padding: const pw.EdgeInsets.all(10),
+                    child: pw.Text(
+                      product.noSeri,
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(
+                        fontSize: 10,
+                        font: ttf,
+                      ),
                     ),
                   ),
                 ],
@@ -132,10 +140,7 @@ class HomeAdminController extends GetxController {
               child: pw.Text(
                 "CATALOG BARANG",
                 textAlign: pw.TextAlign.center,
-                style: pw.TextStyle(
-                  fontSize: 24,
-                  font: ttf
-                ),
+                style: pw.TextStyle(fontSize: 24, font: ttf),
               ),
             ),
             pw.SizedBox(height: 20),
@@ -236,6 +241,18 @@ class HomeAdminController extends GetxController {
                         ),
                       ),
                     ),
+                    pw.Padding(
+                      padding: const pw.EdgeInsets.all(20),
+                      child: pw.Text(
+                        "No Seri",
+                        textAlign: pw.TextAlign.center,
+                        style: pw.TextStyle(
+                          fontSize: 10,
+                          font: ttf,
+                          fontWeight: pw.FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 ...allData,
@@ -254,30 +271,20 @@ class HomeAdminController extends GetxController {
   }
 
   Future<Map<String, dynamic>> getProductByCode(String code) async {
-
     try {
-      
-      var hasil = await firestore.collection("products").where("kode_barang", isEqualTo: code).get();
+      var hasil = await firestore
+          .collection("products")
+          .where("kode_barang", isEqualTo: code)
+          .get();
 
       if (hasil.docs.isEmpty) {
-        return {
-          "error": true
-        };
+        return {"error": true};
       }
 
       Map<String, dynamic> data = hasil.docs.first.data();
-      return {
-        "error": false,
-        "data": ProductModel.fromJson(data)
-      };
-
-
+      return {"error": false, "data": ProductModel.fromJson(data)};
     } catch (e) {
-      return {
-        "error" : true
-      };
+      return {"error": true};
     }
-
   }
-
 }
