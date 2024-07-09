@@ -6,6 +6,7 @@ class ProductModel {
   final String spec;
   final String status;
   final String noSeri;
+  final DateTime tanggal;
 
   ProductModel(
       {required this.name,
@@ -14,16 +15,19 @@ class ProductModel {
       required this.category,
       required this.spec,
       required this.status,
-      required this.noSeri});
+      required this.noSeri,
+      required this.tanggal});
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-      name: json['nama_barang'] ?? "",
-      nip: json['nip'] ?? "",
-      code: json['kode_barang'] ?? "",
-      category: json['jenis_barang'] ?? "",
-      spec: json['spesifikasi'] ?? "",
-      status: json['status_barang'] ?? "",
-      noSeri: json['no_seri'] ?? "");
+        name: json['nama_barang'] ?? "",
+        nip: json['nip'] ?? "",
+        code: json['kode_barang'] ?? "",
+        category: json['jenis_barang'] ?? "",
+        spec: json['spesifikasi'] ?? "",
+        status: json['status_barang'] ?? "",
+        noSeri: json['no_seri'] ?? "",
+        tanggal: json['tanggal'] ?? DateTime.now(),
+      );
 
   Map<String, dynamic> toJson() => {
         "name": name,
@@ -32,6 +36,7 @@ class ProductModel {
         "code": code,
         "spec": spec,
         "status": status,
-        "noSeri": noSeri
+        "noSeri": noSeri,
+        "tanggal": tanggal
       };
 }

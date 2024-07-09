@@ -199,10 +199,26 @@ class _AddProductFullState extends State<AddProductFull> {
                     controller: noSeriProductCtrl,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
-                        labelText: "No Seri (Opsional)",
-                        labelStyle: const TextStyle(fontSize: 16),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(9))),
+                      icon: Icon(Icons.calendar_today_rounded),
+                      labelText: "Pilih Tanggal",
+                      labelStyle: const TextStyle(fontSize: 16),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(9),
+                      ),
+                    ),
+                    onTap: () async{
+                      DateTime? pickeddate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101));
+                      if (pickeddate != null) {
+                        setState(() {
+                          noSeriProductCtrl.text =
+                              pickeddate.toString().split(" ")[0];
+                        });
+                      }
+                    },
                   ),
                   sizedBox,
                   ElevatedButton(
@@ -235,7 +251,7 @@ class _AddProductFullState extends State<AddProductFull> {
                                 "jenis_barang": categoryProductCtrl.text,
                                 "spesifikasi": specificationProductCtrl.text,
                                 "status_barang": statusProductCtrl.text,
-                                "no_seri": noSeriProductCtrl.text ?? ""
+                                "no_seri": noSeriProductCtrl.text,
                               });
 
                               addCtrl.isLoading(false);

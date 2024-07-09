@@ -241,15 +241,29 @@ class _DetailProductFullState extends State<DetailProductFull> {
                     autocorrect: false,
                     controller: noSeriCtrl,
                     textInputAction: TextInputAction.next,
-                    keyboardType: TextInputType.text,
+                    keyboardType: TextInputType.datetime,
                     decoration: InputDecoration(
-                      labelText: noSeriCtrl.text.isEmpty
-                          ? "No Seri (Opsional)"
-                          : "No Seri",
+                      icon: Icon(Icons.calendar_today_rounded),
+                      labelText: "Pilih Tanggal",
+                          // noSeriCtrl.text.isEmpty ? "Pilih Tanggal" : "No Seri",
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(9),
                       ),
                     ),
+                    onTap: () async {
+                      DateTime? pickeddate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime(2101));
+                      if (pickeddate != null && pickeddate != pickeddate) {
+                        setState(() {
+                          pickeddate = pickeddate;
+                          noSeriCtrl.text =
+                              pickeddate!.toString().split(" ")[0];
+                        });
+                      }
+                    },
                   ),
                   const SizedBox(height: 35),
                   ElevatedButton(
